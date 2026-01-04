@@ -53,21 +53,21 @@ public class DMS{
         observers.remove(observer);
     }
 
-    // 选择性通知特定角色的观察者
+    // 选择性通知特定角色的观察者（改为静默通知）
     private void notifySpecificObservers(Document doc, String message, String... roles) {
         // roles是一个String数组，包含需要通知的角色名称
         Set<String> roleSet = new HashSet<>(Arrays.asList(roles));
         for (Observer observer : observers) {
             if (roleSet.contains(observer.getRole())) {
-                observer.update(doc, message);
+                observer.update(doc, message);  // 静默添加到通知列表
             }
         }
     }
 
-    // 通知所有观察者
+    // 通知所有观察者（改为静默通知）
     private void notifyAllObservers(Document doc, String message) {
         for (Observer observer : observers) {
-            observer.update(doc, message);
+            observer.update(doc, message);  // 静默添加到通知列表
         }
     }
 
@@ -109,7 +109,7 @@ public class DMS{
         if (!previousState.equals(doc.getState().getStateName())) {
             // 系统自动通知官员（Officer）和秘书（Secretary）
             notifySpecificObservers(doc,
-                    "Project has been initiated. Waiting for content drafting.",
+                    "Project '" + doc.getTitle() + "' has been initiated. Waiting for content drafting.",
                     "Officer", "Secretary");
         }
     }
@@ -121,7 +121,7 @@ public class DMS{
         if (!previousState.equals(doc.getState().getStateName())) {
             // 系统自动通知官员（Officer）和项目主管（Supervisor）
             notifySpecificObservers(doc,
-                    "Content has been submitted for review.",
+                    "Content of '" + doc.getTitle() + "' has been submitted for review.",
                     "Officer", "Supervisor");
         }
     }
@@ -134,12 +134,12 @@ public class DMS{
             if (passed) {
                 // 若审核结果为通过，系统自动通知官员（Officer）
                 notifySpecificObservers(doc,
-                        "Content has passed review. Waiting for approval.",
+                        "Content of '" + doc.getTitle() + "' has passed review. Waiting for approval.",
                         "Officer");
             } else {
                 // 若审核结果为不通过，系统自动通知官员（Officer）和秘书（Secretary）
                 notifySpecificObservers(doc,
-                        "Content failed review. Returned to writing state for revision.",
+                        "Content of '" + doc.getTitle() + "' failed review. Returned to writing state for revision.",
                         "Officer", "Secretary");
             }
         }
@@ -153,12 +153,12 @@ public class DMS{
             if (approved) {
                 // 若审查结果为批准，系统自动通知项目主管（Supervisor）和档案管理员（Archivist）
                 notifySpecificObservers(doc,
-                        "Document has been approved and published.",
+                        "Document '" + doc.getTitle() + "' has been approved and published.",
                         "Supervisor", "Archivist");
             } else {
                 // 若审查结果为不批准，系统自动通知项目主管（Supervisor）和秘书（Secretary）
                 notifySpecificObservers(doc,
-                        "Document approval rejected. Returned to writing state for revision.",
+                        "Document '" + doc.getTitle() + "' approval rejected. Returned to writing state for revision.",
                         "Supervisor", "Secretary");
             }
         }
@@ -171,7 +171,7 @@ public class DMS{
         if (!previousState.equals(doc.getState().getStateName())) {
             // 若审查结果为撤销项目，系统自动通知项目主管（Supervisor）、秘书（Secretary）和档案管理员（Archivist）
             notifySpecificObservers(doc,
-                    "Project has been revoked.",
+                    "Project '" + doc.getTitle() + "' has been revoked.",
                     "Supervisor", "Secretary", "Archivist");
         }
     }
@@ -182,7 +182,7 @@ public class DMS{
 
         if (!previousState.equals(doc.getState().getStateName())) {
             // 通知所有相关人员文档已归档
-            notifyAllObservers(doc, "Document has been archived.");
+            notifyAllObservers(doc, "Document '" + doc.getTitle() + "' has been archived.");
         }
     }
 

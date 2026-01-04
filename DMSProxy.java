@@ -11,6 +11,9 @@ public class DMSProxy {
     public void setCurrentUser(Observer user) {
         this.currentUser = user;
         System.out.println("\n[System] User logged in: " + user.getName() + " (" + user.getRole() + ")");
+
+        // 登录后显示未读通知提示
+        showUnreadNotificationHint();
     }
 
     // 获取当前用户
@@ -45,6 +48,23 @@ public class DMSProxy {
         throw new Exception("Access denied: " + userRole + " is not authorized to perform this operation.");
     }
 
+    // 显示未读通知提示
+    private void showUnreadNotificationHint() {
+        if (currentUser != null && currentUser.hasUnreadNotifications()) {
+            int count = currentUser.getUnreadCount();
+            System.out.println("[Notification] You have " + count + " unread notification(s). " +
+                    "Use option 'View my notifications' to check.");
+        }
+    }
+
+    // 在操作后显示新通知提示
+    private void showNotificationHintAfterAction() {
+        if (currentUser != null && currentUser.hasUnreadNotifications()) {
+            int count = currentUser.getUnreadCount();
+            System.out.println("\n[+] You have " + count + " unread notification(s).");
+        }
+    }
+
     // ========== 文档创建方法 ==========
     // 只有 Supervisor 可以创建文档
     public Document createDocument(String title) throws Exception {
@@ -54,7 +74,9 @@ public class DMSProxy {
             throw new Exception("Document title cannot be empty.");
         }
 
-        return dms.createDocument(title);
+        Document doc = dms.createDocument(title);
+        showNotificationHintAfterAction();
+        return doc;
     }
 
     // ========== 项目立项 ==========
@@ -67,6 +89,7 @@ public class DMSProxy {
         }
 
         dms.initiateProject(doc);
+        showNotificationHintAfterAction();
     }
 
     // ========== 提交内容 ==========
@@ -83,6 +106,7 @@ public class DMSProxy {
         }
 
         dms.submitContent(doc);
+        showNotificationHintAfterAction();
     }
 
     // ========== 审核内容 ==========
@@ -95,6 +119,7 @@ public class DMSProxy {
         }
 
         dms.reviewContent(doc, passed);
+        showNotificationHintAfterAction();
     }
 
     // ========== 批准内容 ==========
@@ -107,6 +132,7 @@ public class DMSProxy {
         }
 
         dms.approveContent(doc, approved);
+        showNotificationHintAfterAction();
     }
 
     // ========== 撤销文档 ==========
@@ -119,6 +145,7 @@ public class DMSProxy {
         }
 
         dms.revokeDocument(doc);
+        showNotificationHintAfterAction();
     }
 
     // ========== 归档文档 ==========
@@ -131,6 +158,7 @@ public class DMSProxy {
         }
 
         dms.archiveDocument(doc);
+        showNotificationHintAfterAction();
     }
 
     // ========== 编辑文档内容 ==========
@@ -154,6 +182,7 @@ public class DMSProxy {
 
         doc.setContent(content);
         System.out.println("Document content updated successfully.");
+        showNotificationHintAfterAction();
     }
 
     // ========== 查看文档内容 ==========
@@ -213,33 +242,13 @@ public class DMSProxy {
     // ========== 查看当前用户的通知 ==========
     public void showMyNotifications() throws Exception {
         checkLogin();
-
-        if (currentUser instanceof Supervisor) {
-            ((Supervisor) currentUser).showNotifications();
-        } else if (currentUser instanceof Secretary) {
-            ((Secretary) currentUser).showNotifications();
-        } else if (currentUser instanceof Officer) {
-            ((Officer) currentUser).showNotifications();
-        } else if (currentUser instanceof Archivist) {
-            ((Archivist) currentUser).showNotifications();
-        }
+        currentUser.showNotifications();
     }
 
     // ========== 清除当前用户的通知 ==========
     public void clearMyNotifications() throws Exception {
         checkLogin();
-
-        if (currentUser instanceof Supervisor) {
-            ((Supervisor) currentUser).clearNotifications();
-        } else if (currentUser instanceof Secretary) {
-            ((Secretary) currentUser).clearNotifications();
-        } else if (currentUser instanceof Officer) {
-            ((Officer) currentUser).clearNotifications();
-        } else if (currentUser instanceof Archivist) {
-            ((Archivist) currentUser).clearNotifications();
-        }
-
-        System.out.println("Notifications cleared.");
+        currentUser.clearNotifications();
     }
 
     // ========== 获取底层 DMS 对象（仅供初始化使用）==========
@@ -253,6 +262,11 @@ public class DMSProxy {
         System.out.println("\n========== Current User Info ==========");
         System.out.println("Name: " + currentUser.getName());
         System.out.println("Role: " + currentUser.getRole());
+
+        // 显示未读通知数量
+        int unreadCount = currentUser.getUnreadCount();
+        System.out.println("Unread Notifications: " + unreadCount);
+
         System.out.println("======================================\n");
     }
 }

@@ -405,7 +405,16 @@ public class Main {
 
     // Supervisor 菜单
     private static boolean showSupervisorMenu() throws Exception {
+        Observer currentUser = proxy.getCurrentUser();
+
         System.out.println("\n[Supervisor Operations]");
+
+        // 显示未读通知提示
+        if (currentUser.hasUnreadNotifications()) {
+            System.out.println(">>> You have " + currentUser.getUnreadCount() +
+                    " unread notification(s) <<<");
+        }
+
         System.out.println("1. Create new document");
         System.out.println("2. Initiate project");
         System.out.println("3. Review content");
@@ -451,7 +460,16 @@ public class Main {
 
     // Secretary 菜单
     private static boolean showSecretaryMenu() throws Exception {
+        Observer currentUser = proxy.getCurrentUser();
+
         System.out.println("\n[Secretary Operations]");
+
+        // 显示未读通知提示
+        if (currentUser.hasUnreadNotifications()) {
+            System.out.println(">>> You have " + currentUser.getUnreadCount() +
+                    " unread notification(s) <<<");
+        }
+
         System.out.println("1. Edit document content");
         System.out.println("2. Submit document for review");
         System.out.println("3. View all documents");
@@ -493,7 +511,16 @@ public class Main {
 
     // Officer 菜单
     private static boolean showOfficerMenu() throws Exception {
+        Observer currentUser = proxy.getCurrentUser();
+
         System.out.println("\n[Officer Operations]");
+
+        // 显示未读通知提示
+        if (currentUser.hasUnreadNotifications()) {
+            System.out.println(">>> You have " + currentUser.getUnreadCount() +
+                    " unread notification(s) <<<");
+        }
+
         System.out.println("1. Approve document");
         System.out.println("2. Reject document");
         System.out.println("3. Revoke project");
@@ -539,7 +566,16 @@ public class Main {
 
     // Archivist 菜单
     private static boolean showArchivistMenu() throws Exception {
+        Observer currentUser = proxy.getCurrentUser();
+
         System.out.println("\n[Archivist Operations]");
+
+        // 显示未读通知提示
+        if (currentUser.hasUnreadNotifications()) {
+            System.out.println(">>> You have " + currentUser.getUnreadCount() +
+                    " unread notification(s) <<<");
+        }
+
         System.out.println("1. Archive document");
         System.out.println("2. View all documents");
         System.out.println("3. View document details");

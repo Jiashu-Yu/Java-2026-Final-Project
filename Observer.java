@@ -16,8 +16,9 @@ public abstract class Observer {
     public abstract String getRole();
 
     // 静默接收通知（不打印）
-    public void update(String message) {
-        notifications.add(message);
+    public void update(Document doc, String message) {
+        String notification = "[" + doc.getTitle() + "] " + message;
+        notifications.add(notification);
     }
 
     // 查看所有通知
