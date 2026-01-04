@@ -409,10 +409,10 @@ public class Main {
 
         System.out.println("\n[Supervisor Operations]");
 
-        // 显示未读通知提示
-        if (currentUser.hasUnreadNotifications()) {
-            System.out.println(">>> You have " + currentUser.getUnreadCount() +
-                    " unread notification(s) <<<");
+        // 显示通知提示
+        if (currentUser.hasNotifications()) {
+            System.out.println(">>> You have " + currentUser.getNotificationCount() +
+                    " notification(s) <<<");
         }
 
         System.out.println("1. Create new document");
@@ -464,10 +464,10 @@ public class Main {
 
         System.out.println("\n[Secretary Operations]");
 
-        // 显示未读通知提示
-        if (currentUser.hasUnreadNotifications()) {
-            System.out.println(">>> You have " + currentUser.getUnreadCount() +
-                    " unread notification(s) <<<");
+        // 显示通知提示
+        if (currentUser.hasNotifications()) {
+            System.out.println(">>> You have " + currentUser.getNotificationCount() +
+                    " notification(s) <<<");
         }
 
         System.out.println("1. Edit document content");
@@ -515,10 +515,10 @@ public class Main {
 
         System.out.println("\n[Officer Operations]");
 
-        // 显示未读通知提示
-        if (currentUser.hasUnreadNotifications()) {
-            System.out.println(">>> You have " + currentUser.getUnreadCount() +
-                    " unread notification(s) <<<");
+        // 显示通知提示
+        if (currentUser.hasNotifications()) {
+            System.out.println(">>> You have " + currentUser.getNotificationCount() +
+                    " notification(s) <<<");
         }
 
         System.out.println("1. Approve document");
@@ -570,10 +570,10 @@ public class Main {
 
         System.out.println("\n[Archivist Operations]");
 
-        // 显示未读通知提示
-        if (currentUser.hasUnreadNotifications()) {
-            System.out.println(">>> You have " + currentUser.getUnreadCount() +
-                    " unread notification(s) <<<");
+        // 显示通知提示
+        if (currentUser.hasNotifications()) {
+            System.out.println(">>> You have " + currentUser.getNotificationCount() +
+                    " notification(s) <<<");
         }
 
         System.out.println("1. Archive document");

@@ -12,8 +12,8 @@ public class DMSProxy {
         this.currentUser = user;
         System.out.println("\n[System] User logged in: " + user.getName() + " (" + user.getRole() + ")");
 
-        // 登录后显示未读通知提示
-        showUnreadNotificationHint();
+        // 登录后显示通知提示
+        showNotificationHint();
     }
 
     // 获取当前用户
@@ -48,20 +48,20 @@ public class DMSProxy {
         throw new Exception("Access denied: " + userRole + " is not authorized to perform this operation.");
     }
 
-    // 显示未读通知提示
-    private void showUnreadNotificationHint() {
-        if (currentUser != null && currentUser.hasUnreadNotifications()) {
-            int count = currentUser.getUnreadCount();
-            System.out.println("[Notification] You have " + count + " unread notification(s). " +
+    // 显示通知提示
+    private void showNotificationHint() {
+        if (currentUser != null && currentUser.hasNotifications()) {
+            int count = currentUser.getNotificationCount();
+            System.out.println("[Notification] You have " + count + " notification(s). " +
                     "Use option 'View my notifications' to check.");
         }
     }
 
-    // 在操作后显示新通知提示
+    // 在操作后显示通知提示
     private void showNotificationHintAfterAction() {
-        if (currentUser != null && currentUser.hasUnreadNotifications()) {
-            int count = currentUser.getUnreadCount();
-            System.out.println("\n[+] You have " + count + " unread notification(s).");
+        if (currentUser != null && currentUser.hasNotifications()) {
+            int count = currentUser.getNotificationCount();
+            System.out.println("\n[+] You have " + count + " notification(s).");
         }
     }
 
@@ -263,9 +263,9 @@ public class DMSProxy {
         System.out.println("Name: " + currentUser.getName());
         System.out.println("Role: " + currentUser.getRole());
 
-        // 显示未读通知数量
-        int unreadCount = currentUser.getUnreadCount();
-        System.out.println("Unread Notifications: " + unreadCount);
+        // 显示通知数量
+        int notificationCount = currentUser.getNotificationCount();
+        System.out.println("Notifications: " + notificationCount);
 
         System.out.println("======================================\n");
     }

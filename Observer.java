@@ -40,18 +40,23 @@ public abstract class Observer {
 
     // 清空通知
     public void clearNotifications() {
+        if (notifications.isEmpty()) {
+            System.out.println("\n[Info] No notifications to clear.");
+            return;
+        }
+
         int count = notifications.size();
         notifications.clear();
         System.out.println("\n[Success] " + count + " notification(s) cleared.");
     }
 
-    // 获取未读通知数量
-    public int getUnreadCount() {
+    // 获取通知数量
+    public int getNotificationCount() {
         return notifications.size();
     }
 
-    // 检查是否有未读通知
-    public boolean hasUnreadNotifications() {
+    // 检查是否有通知
+    public boolean hasNotifications() {
         return !notifications.isEmpty();
     }
 }
