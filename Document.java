@@ -1,8 +1,9 @@
 import java.time.LocalDateTime;
-import java.util.EnumMap;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Document {
+    // 状态对象
     DocumentState createdState;
     DocumentState writingState;
     DocumentState reviewState;
@@ -11,15 +12,23 @@ public class Document {
     DocumentState revokedState;
     DocumentState archivedState;
 
-    private String title;
+    // 基本属性
+    private final String title;
     private String content;
     private DocumentState state;
 
+    // 时间标签 - 记录每个环节的处理时间
+    private Map<String, LocalDateTime> timestamps;
+
     public static int documentCounter = 0;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Document(String title) {
         this.title = title;
         this.content = "";
+        this.timestamps = new LinkedHashMap<>(); // 保持插入顺序
+
+        // 初始化所有状态
         createdState = new createdState(this);
         writingState = new writingState(this);
         reviewState = new reviewState(this);
@@ -27,14 +36,37 @@ public class Document {
         publishedState = new publishedState(this);
         revokedState = new revokedState(this);
         archivedState = new archivedState(this);
+
         state = createdState;
         documentCounter++;
+
+        // 记录创建时间
+        addTimestamp("Created");
     }
 
+    // 状态设置，添加时间记录
     public void setState(DocumentState state) {
         this.state = state;
+        addTimestamp(state.getStateName());
     }
 
+    // 时间标签管理
+    public void addTimestamp(String event) {
+        timestamps.put(event, LocalDateTime.now());
+    }
+
+    public String getTimestampHistory() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Time History for Document: ").append(title).append("\n");
+        for (Map.Entry<String, LocalDateTime> entry : timestamps.entrySet()) {
+            sb.append(String.format("  %s: %s\n",
+                    entry.getKey(),
+                    entry.getValue().format(formatter)));
+        }
+        return sb.toString();
+    }
+
+    // 状态转换方法
     public void initiateProject() {
         state.initiateProject(this);
     }
@@ -59,6 +91,7 @@ public class Document {
         state.archiveDocument(this);
     }
 
+    // Getter方法
     public DocumentState getState() {
         return state;
     }
@@ -104,6 +137,6 @@ public class Document {
     }
 
     public String toString() {
-        return "Document: " + title + " is currently in state: " + state.getStateName();
+        return "Document: " + title + " | State: " + state.getStateName();
     }
 }
