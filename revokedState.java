@@ -1,5 +1,5 @@
 public class revokedState implements DocumentState {
-    private Document doc;
+    Document doc;
 
     public revokedState(Document doc) {
         this.doc = doc;
