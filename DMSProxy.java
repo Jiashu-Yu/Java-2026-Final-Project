@@ -57,14 +57,6 @@ public class DMSProxy {
         }
     }
 
-    // 在操作后显示通知提示
-    private void showNotificationHintAfterAction() {
-        if (currentUser != null && currentUser.hasNotifications()) {
-            int count = currentUser.getNotificationCount();
-            System.out.println("\n[+] You have " + count + " notification(s).");
-        }
-    }
-
     // ========== 文档创建方法 ==========
     // 只有 Supervisor 可以创建文档
     public Document createDocument(String title) throws Exception {
@@ -75,7 +67,6 @@ public class DMSProxy {
         }
 
         Document doc = dms.createDocument(title);
-        showNotificationHintAfterAction();
         return doc;
     }
 
@@ -89,7 +80,6 @@ public class DMSProxy {
         }
 
         dms.initiateProject(doc);
-        showNotificationHintAfterAction();
     }
 
     // ========== 提交内容 ==========
@@ -106,7 +96,6 @@ public class DMSProxy {
         }
 
         dms.submitContent(doc);
-        showNotificationHintAfterAction();
     }
 
     // ========== 审核内容 ==========
@@ -119,7 +108,6 @@ public class DMSProxy {
         }
 
         dms.reviewContent(doc, passed);
-        showNotificationHintAfterAction();
     }
 
     // ========== 批准内容 ==========
@@ -132,7 +120,6 @@ public class DMSProxy {
         }
 
         dms.approveContent(doc, approved);
-        showNotificationHintAfterAction();
     }
 
     // ========== 撤销文档 ==========
@@ -145,7 +132,6 @@ public class DMSProxy {
         }
 
         dms.revokeDocument(doc);
-        showNotificationHintAfterAction();
     }
 
     // ========== 归档文档 ==========
@@ -158,7 +144,6 @@ public class DMSProxy {
         }
 
         dms.archiveDocument(doc);
-        showNotificationHintAfterAction();
     }
 
     // ========== 编辑文档内容 ==========
@@ -182,7 +167,6 @@ public class DMSProxy {
 
         doc.setContent(content);
         System.out.println("Document content updated successfully.");
-        showNotificationHintAfterAction();
     }
 
     // ========== 查看文档内容 ==========
