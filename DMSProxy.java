@@ -79,6 +79,11 @@ public class DMSProxy {
             throw new Exception("Document cannot be null.");
         }
 
+        if (!doc.getState().getStateName().equals("Created")) {
+            throw new Exception("Can only initiate project in 'Created' state. Current state: "
+                    + doc.getState().getStateName());
+        }
+
         dms.initiateProject(doc);
     }
 
@@ -95,6 +100,11 @@ public class DMSProxy {
             throw new Exception("Cannot submit document with empty content.");
         }
 
+        if (!doc.getState().getStateName().equals("Writing")) {
+            throw new Exception("Can only submit document in 'Writing' state. Current state: "
+                    + doc.getState().getStateName());
+        }
+
         dms.submitContent(doc);
     }
 
@@ -105,6 +115,11 @@ public class DMSProxy {
 
         if (doc == null) {
             throw new Exception("Document cannot be null.");
+        }
+
+        if (!doc.getState().getStateName().equals("Under Review")) {
+            throw new Exception("Can only review document in 'Under Review' state. Current state: "
+                    + doc.getState().getStateName());
         }
 
         dms.reviewContent(doc, passed);
@@ -119,6 +134,11 @@ public class DMSProxy {
             throw new Exception("Document cannot be null.");
         }
 
+        if (!doc.getState().getStateName().equals("To Be Approved")) {
+            throw new Exception("Can only approve document in 'To Be Approved' state. Current state: "
+                    + doc.getState().getStateName());
+        }
+
         dms.approveContent(doc, approved);
     }
 
@@ -131,6 +151,11 @@ public class DMSProxy {
             throw new Exception("Document cannot be null.");
         }
 
+        if (!doc.getState().getStateName().equals("To Be Approved")) {
+            throw new Exception("Can only revoke document in 'To Be Approved' state. Current state: "
+                    + doc.getState().getStateName());
+        }
+
         dms.revokeDocument(doc);
     }
 
@@ -141,6 +166,11 @@ public class DMSProxy {
 
         if (doc == null) {
             throw new Exception("Document cannot be null.");
+        }
+
+        String state = doc.getState().getStateName();
+        if (!state.equals("Published") && !state.equals("Revoked")) {
+            throw new Exception("Can only archive document in 'Published' or 'Revoked' state. Current state: " + state);
         }
 
         dms.archiveDocument(doc);
